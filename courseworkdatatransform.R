@@ -3,7 +3,7 @@ library(tidyverse)
 library(lubridate)
 library(purrr)
 
-setwd("C://users/glumb/documents/university/math513/coursework")
+setwd("C://users/glumb/documents/university/math513/coursework/trump")
 
 speech_file <- c("BemidjiSep18_2020.txt", "MindenSep12_2020.txt",
                  "FayettevilleSep19_2020.txt",  "MosineeSep17_2020.txt",
