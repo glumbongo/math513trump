@@ -72,7 +72,9 @@ word_graph <- function(data_frame, filterword)
     geom_point() +
     theme_minimal() +
     geom_smooth(method = "lm", se = FALSE , color = "black") +
-    geom_smooth(se = TRUE)+
+    geom_smooth(se = TRUE) +
+    theme_light()+
+    theme(legend.position="none") +
     facet_wrap(~word , scales = "free") +
     labs(y = "Percentage of words in Donald Trump's rallies", x = "Rally Date", color = "Word", title = "Change of word frequency in Donald Trump's rallies in September 2020") +
     scale_y_continuous(labels = scales::percent)
