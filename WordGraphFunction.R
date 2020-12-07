@@ -35,6 +35,9 @@ speeches <- y %>% mutate(date = as.Date(date, "%b%d%Y"))
 speeches
 
 
+
+
+
 ##Question 1##
 
 ## Function that produces a graph depending on the chosen filter word
@@ -47,7 +50,7 @@ word_graph <- function(data_frame, filterword)
   tidy_words <- words %>% anti_join(stop_words)
   
   
-  #Counts the amount of times the word was sid and groups it to the day
+  #Counts the amount of times the word was said and groups it to the day
   
   words <- tidy_words %>% group_by(date) %>% count(word, sort = TRUE)
   
@@ -86,4 +89,42 @@ word_graph <- function(data_frame, filterword)
 filtered_words <- c("money", "america", "obama", "china", "biden", "people")
 word_graph(speeches, filtered_words)
 
+
+
+### Question 2
+tf_idf_function <- function(dataframe)
+{
+  
+
+words <- dataframe %>% unnest_tokens(word, speech)
+
+#removes stop words
+tidy_words <- words %>% anti_join(stop_words)
+
+
+#Counts the amount of times the word was said and groups it to the day
+
+words <- tidy_words %>% group_by(location) %>% count(word, sort = TRUE)
+
+# Gets and binds the tf and idf to the dataframe 
+tfidfwords <- q2words %>% bind_tf_idf(word, location , n) %>% arrange(desc(tf_idf))
+
+# Gets the top td-idf of each location to use in graph
+tf_top10 <- tfidfwords %>% group_by(location) %>% filter(rank(desc(tf_idf), ties.method = "min") <= 10)
+
+
+
+tf_top10
+tf_top10 %>% 
+  ggplot(aes(x = reorder(word, tf_idf),
+             y = tf_idf,
+             fill = location)) +
+  geom_bar(stat = "identity")+
+  coord_flip() +
+  theme(legend.position="none") +
+  facet_wrap(~location, scales = "free") +
+  labs(y = " ", x = "tf???idf index", title = "Highest tf???idf Words in Donald Trump's Rallies in September 2020") 
+}
+
+tf_idf_function(speeches)
 
