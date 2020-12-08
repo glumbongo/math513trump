@@ -186,7 +186,7 @@ tfidfwords
 ## Gets ranking
 
 test <- tfidfwords %>%
-  arrange(location, tf) %>%
+  arrange(location, desc(tf)) %>%
   group_by(location) %>%
   mutate(rank = row_number())
 
