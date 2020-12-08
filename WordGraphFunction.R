@@ -163,3 +163,38 @@ tf_top10 %>%
 
 tf_idf_function(speeches)
 
+
+
+## PARTIALLY COMPLETE, CODE MORE OR LESS RIGHT , SOMEHOW FUCKED UP TF NUM???
+## Question 3
+
+words <- speeches %>% unnest_tokens(word, speech)
+
+#removes stop words
+
+
+#Counts the amount of times the word was said and groups it to the day
+
+wordscount <- words %>% group_by(location) %>% count(word, sort = TRUE)
+
+# Gets and binds the tf and idf to the dataframe 
+tfidfwords <- wordscount %>% bind_tf_idf(word, location , n) %>% arrange(desc(tf))
+
+
+tfidfwords
+
+## Gets ranking
+
+test <- tfidfwords %>%
+  arrange(location, tf) %>%
+  group_by(location) %>%
+  mutate(rank = row_number())
+
+test
+
+# tfidfwords_ranked <- tfidfwords %>% as.numeric(row.names(tfidfwords))
+
+test %>% 
+  ggplot(aes( x = rank , y = tf, color = location)) +
+  geom_line() +
+  scale_y_log10() 
